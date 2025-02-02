@@ -1,6 +1,24 @@
+import { useRef } from 'react';
 import './TaskInput.scss'
 
-export default function TaskInput({ inputRef, addBtnRef, handleAdd, isEditing }) {
+export default function TaskInput({ items, setItems, isEditing }) {
+  const inputRef = useRef();
+  const addBtnRef = useRef();
+
+  const handleAdd = () => {
+    const input = inputRef.current;
+    const value = input.value;
+
+    if (value === '') {
+      input.focus();
+      return;
+    }
+
+    setItems([...items, { id: Date.now(), value, isEditing: false, isChecked: false }]);
+    input.value = '';
+    input.focus();
+  };
+
   return (
     <form id="form" onSubmit={e => e.preventDefault()}>
       <label htmlFor="task-input">task: </label>
